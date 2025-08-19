@@ -1,13 +1,17 @@
 import express, { Request, Response } from "express";
-import fetch from "node-fetch";
+import { config } from 'dotenv';
+import path from 'node:path';
 
+config({ path: path.resolve(process.cwd(), '.env') });
+
+const SERVICE_NAME = 'pinger';
 export interface PingResult {
-    responseCode: number;
-    responseTime: number;
-  }
+  responseCode: number;
+  responseTime: number;
+}
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env[`SERVICE_${SERVICE_NAME.toUpperCase()}_PORT`] || 3000;
 
 export async function pingResource(url: string, timeoutMs = 5000): Promise<PingResult> {
   const controller = new AbortController();
@@ -32,13 +36,8 @@ app.get("/ping/:resource", async (req: Request, res: Response) => {
   const { resource } = req.params;
   const timeoutMs = req.query.timeout ? parseInt(req.query.timeout as string) : 5000;
 
-  let url = resource;
-  if (!/^https?:\/\//i.test(url)) {
-    url = `http://${url}`;
-  }
-
   try {
-    const { responseCode, responseTime } = await pingResource(url, timeoutMs);
+    const { responseCode, responseTime } = await pingResource(`https://${resource}`, timeoutMs);
     if (responseCode >= 200 && responseCode <= 599) {
       res.status(200).json({
         "response-code": responseCode,

@@ -6,8 +6,9 @@
   "private": true,
   "scripts": {
     "preinstall": "npx only-allow pnpm",
+    "dev:svc-pinger": "pnpm --filter @checkpulse/svc-pinger dev",
     "test": "vitest run",
-    "lint": "biome check . --apply"
+    "lint": "biome check . "
   },
   "keywords": [],
   "author": "",
@@ -17,6 +18,7 @@
     "@biomejs/biome": "^2.2.0",
     "@types/node": "^24.3.0",
     "ts-node": "^10.9.2",
+    "tsx": "^4.20.4",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"
   },
@@ -29,5 +31,8 @@
   "volta": {
     "node": "20.19.4",
     "pnpm": "10.12.1"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.1"
   }
 }

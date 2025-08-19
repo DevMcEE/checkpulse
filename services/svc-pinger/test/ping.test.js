@@ -16,3 +16,8 @@ test("GET /ping/:resource should return 404 for invalid resource", async () => {
 
   assert.strictEqual(res.statusCode, 404);
 });
+
+// validate request 
+// ok 
+// timeout
+// 
