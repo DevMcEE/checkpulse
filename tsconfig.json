@@ -12,11 +12,6 @@
       "@checkpulse/*": ["services/*/src"]
     }
   },
-  "include": [
-    "services/**/*"
-  ],
-  "exclude": [
-    "**/dist",
-    "**/node_modules"
-  ]
+  "include": ["services/**/*"],
+  "exclude": ["**/dist", "**/node_modules"]
 }
