@@ -1,0 +1,1 @@
+export type HostType = "IPv4" | "URL"
