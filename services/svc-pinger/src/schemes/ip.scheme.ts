@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ISchemeProps } from "../types/api.interfaces";
+import type { ISchemeProps } from "../types/api.interfaces";
 
 const IPV4_WITH_PORT_PATH_REGEX =
   /^(?![a-zA-Z][a-zA-Z0-9+.-]*:\/\/)(?<ip>(?:\d{1,3}\.){3}\d{1,3})(?::(?<port>\d{1,5}))?(?<rest>(?:[/?#][^\s]*)?)$/;

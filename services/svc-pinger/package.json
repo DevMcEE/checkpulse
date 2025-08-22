@@ -7,9 +7,10 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "lint": "biome check src/",
+    "format": "biome format src/",
     "test": "vitest"
   },
   "keywords": [],

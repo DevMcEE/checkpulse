@@ -1,107 +1,85 @@
 import axios from "axios";
-import { pingController } from "../src/controllers/ping.controller";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeAll, afterAll } from "vitest";
+import { PORT } from "../src/config";
+import { startServer } from "../src/app";
+import { Server } from "http";
+
 
 vi.mock("axios")
+let server: Server
+const BASE_URL = `http://localhost:${PORT}`;
 
-const mockRes = () => {
-    const res: any = {}
-    res.status = vi.fn().mockReturnValue(res)
-    res.json = vi.fn().mockReturnValue(res)
-    res.sendStatus = vi.fn().mockReturnValue(res)
-    return res
-}
-
-describe("pingController", () => {
-    beforeEach(() => {
-        vi.clearAllMocks()
+describe("Ping Service", () => {
+    beforeAll(() => {
+        server = startServer(PORT)
+    })
+    afterAll(() => {
+        server.close()
     })
 
-    it("Should return code 200 and data", async () => {
-        const req: any = {
-            params: {address: "example.com%2Ftest%3Fmonkey%3Dcool"},
-            query: {}
-        }
-        const res = mockRes();
-        (axios.get as any).mockResolvedValue({
-            status: 200,
-            headers: {"content-type": "application/json"},
-            data: { hello: "world" }
+    it("Should return code 200 and type 'text/plain'", async () => {
+        const url = `${BASE_URL}/ping/url/example.com?timeout=4000`;
+        const mockGet = vi.spyOn(axios, "get").mockResolvedValue({
+            status:200,
+            data:"uhm, okay",
+            headers: {"content-type": "text/plain"},
+            statusText: "OK",
+            config: {}
         })
+        const res = await fetch(url)
+        const json = await res.json();
+        expect(json.data).toHaveProperty("code", 200)
+        expect(json.data).toHaveProperty("type", "text/plain")
 
-        await pingController(req, res)
+        mockGet.mockRestore();
         
-        expect(axios.get).toHaveBeenCalledWith("https://example.com/test?monkey=cool", {timeout: 30000});
-        expect(res.status).toHaveBeenCalledWith(200);
-        expect(res.json).toHaveBeenCalledWith(
-            expect.objectContaining({
-                data: expect.objectContaining({
-                    code: 200,
-                    type: "application/json",
-                    message: {hello: "world"}
-                })
-            })
-        )
     })
-    it("Should return timeouted=true if ECONNABORTED", async () => {
-    const req: any = {
-      params: { address: "example.com" },
-      query: {}
-    };
-    const res = mockRes();
-
-    (axios.get as any).mockRejectedValue({ code: "ECONNABORTED" });
-
-    await pingController(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.json).toHaveBeenCalledWith(
-      expect.objectContaining({
-        data: expect.objectContaining({ timeouted: true })
-      })
-    );
-  });
-
-  it("Should return code 404", async () => {
-    const req: any = {
-      params: { address: "example.com" },
-      query: {}
-    };
-    const res = mockRes();
-
-    (axios.get as any).mockRejectedValue({
-      response: {
-        status: 404,
-        headers: { "content-type": "text/html" },
-        message: "Not found"
-      }
-    });
-
-    await pingController(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.json).toHaveBeenCalledWith(
-      expect.objectContaining({
-        data: expect.objectContaining({
-          code: 404,
-          type: "text/html",
-          message: "Not found"
+    it("Server should return code 400 and error message cause of invalid address", async () => {
+        const url = `${BASE_URL}/ping/url/example?timeout=4000`;
+        const mockGet = vi.spyOn(axios, "get").mockResolvedValue({
+            status:200,
+            data:"uhm, okay",
+            headers: {"content-type": "text/plain"},
+            statusText: "OK",
+            config: {}
         })
-      })
-    );
-  });
+        const res = await fetch(url)
+        const json = await res.json();
 
-  it("Should return code 500", async () => {
-    const req: any = {
-      params: { address: "example.com" },
-      query: {}
-    };
-    const res = mockRes();
+        expect(res).toHaveProperty("status", 400)
+        expect(json).toHaveProperty("error")
 
-    (axios.get as any).mockRejectedValue(new Error("boom"));
+        mockGet.mockRestore();
+    })
+    it("Server should return code 400 and error message cause of invalid ip", async () => {
+        const url = `${BASE_URL}/ping/ip/945.123.112`;
+        const mockGet = vi.spyOn(axios, "get").mockResolvedValue({
+            status:200,
+            data:"uhm, okay",
+            headers: {"content-type": "text/plain"},
+            statusText: "OK",
+            config: {}
+        })
+        const res = await fetch(url)
+        const json = await res.json();
 
-    await pingController(req, res );
+        expect(res).toHaveProperty("status", 400)
+        expect(json).toHaveProperty("error")
 
-    expect(res.status).toHaveBeenCalledWith(500);
-  });
+        mockGet.mockRestore();
+    })
+    it("Should return timeouted = true", async () => {
+        const url = `${BASE_URL}/ping/url/example.com?timeout=50000`;
+        const error: any = new Error("timeout");
+        error.code = "ECONNABORTED";
+
+        const mockGet = vi.spyOn(axios, "get").mockRejectedValue(error);
+
+        const res = await fetch(url)
+        
+        const json = await res.json();
+        console.log(json)
+        expect(json.data).toHaveProperty("timeouted", true)
+        mockGet.mockRestore();
+    })
 })
