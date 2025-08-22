@@ -78,7 +78,6 @@ describe("Ping Service", () => {
         const res = await fetch(url)
         
         const json = await res.json();
-        console.log(json)
         expect(json.data).toHaveProperty("timeouted", true)
         mockGet.mockRestore();
     })
