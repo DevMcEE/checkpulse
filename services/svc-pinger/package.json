@@ -4,17 +4,27 @@
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "type": "module",
   "private": true,
   "scripts": {
-    "dev": "ts-node src/index.ts",
+    "dev": "tsx watch src/server.ts",
     "build": "tsc",
-    "lint": "biome check src/"
+    "lint": "biome check src/",
+    "format": "biome format src/",
+    "test": "vitest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.12.1",
-  "dependencies": {},
+  "dependencies": {
+    "@types/axios": "^0.14.4",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "axios": "^1.11.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  },
   "engines": {
     "node": "^20.19.0",
     "pnpm": "^10.12.1",
