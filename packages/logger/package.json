@@ -1,0 +1,45 @@
+{
+  "name": "@checkpulse/logger",
+  "version": "0.1.0",
+  "description": "",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/index.cjs"
+    }
+  },
+  "tsup": {
+    "entry": [
+      "src/index.ts"
+    ],
+    "splitting": false,
+    "sourcemap": true,
+    "clean": true
+  },
+  "scripts": {
+    "build": "tsup",
+    "start": "node dist/server.cjs",
+    "lint": "biome check",
+    "format": "biome format --write",
+    "test": "vitest",
+    "clean:build": "rm -rf ./dist"
+  },
+  "packageManager": "pnpm@10.12.1",
+  "dependencies": {
+    "pino": "^9.9.0",
+    "pino-http": "^10.5.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": "^20.19.0",
+    "pnpm": "^10.12.1",
+    "yarn": "use pnpm instead",
+    "npm": "use pnpm instead"
+  },
+  "volta": {
+    "node": "20.19.4",
+    "pnpm": "10.12.1"
+  }
+}

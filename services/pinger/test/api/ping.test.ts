@@ -3,6 +3,7 @@ import nock from 'nock';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { startServer } from '../../src/app';
 import { PORT } from '../../src/config';
+import { logger } from '@checkpulse/logger';
 
 let server: Server;
 const BASE_URL = `http://localhost:${PORT}`;
@@ -13,7 +14,7 @@ beforeAll(() => {
 });
 
 afterAll(() => {
-  server.close(() => console.log('Server closed'));
+  server.close(() => logger.info('Server closed'));
 });
 
 describe('Ping Service', () => {

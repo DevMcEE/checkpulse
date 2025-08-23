@@ -6,9 +6,12 @@
   "private": true,
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "dev:svc-pinger": "pnpm --filter @checkpulse/svc-pinger dev",
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "start": "turbo run start",
     "test": "vitest run",
-    "lint": "biome check"
+    "lint": "turbo run lint",
+    "format": "biome format --write"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +22,9 @@
     "@types/node": "^24.3.0",
     "nock": "^14.0.10",
     "ts-node": "^10.9.2",
+    "tsup": "^8.5.0",
     "tsx": "^4.20.4",
+    "turbo": "^2.5.6",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"
   },
