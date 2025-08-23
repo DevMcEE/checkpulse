@@ -1,0 +1,52 @@
+{
+  "name": "@checkpulse/pinger",
+  "version": "0.1.0",
+  "description": "",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./src/server.ts"
+  },
+  "tsup": {
+    "entry": [
+      "src/server.ts"
+    ],
+    "splitting": false,
+    "sourcemap": true,
+    "clean": true
+  },
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsup",
+    "start": "node dist/server.cjs",
+    "lint": "biome check",
+    "format": "biome format --write",
+    "test": "vitest",
+    "clean:build": "rm -rf ./dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.12.1",
+  "dependencies": {
+    "axios": "^1.11.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "@checkpulse/logger": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.4",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3"
+  },
+  "engines": {
+    "node": "^20.19.0",
+    "pnpm": "^10.12.1",
+    "yarn": "use pnpm instead",
+    "npm": "use pnpm instead"
+  },
+  "volta": {
+    "node": "20.19.4",
+    "pnpm": "10.12.1"
+  }
+}
