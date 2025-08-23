@@ -4,9 +4,7 @@
   "description": "",
   "type": "module",
   "private": true,
-  "exports": {
-    ".": "./src/server.ts"
-  },
+  "main": "dist/server.cjs",
   "tsup": {
     "entry": [
       "src/server.ts"
@@ -16,12 +14,12 @@
     "clean": true
   },
   "scripts": {
-    "dev": "tsx watch src/server.ts",
+    "dev": "NODE_ENV=dev tsx watch src/server.ts",
     "build": "tsup",
     "start": "node dist/server.cjs",
     "lint": "biome check",
     "format": "biome format --write",
-    "test": "vitest",
+    "test": "NODE_ENV=test vitest",
     "clean:build": "rm -rf ./dist"
   },
   "keywords": [],
@@ -29,10 +27,11 @@
   "license": "ISC",
   "packageManager": "pnpm@10.12.1",
   "dependencies": {
+    "@checkpulse/logger": "workspace:*",
     "axios": "^1.11.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "@checkpulse/logger": "workspace:*"
+    "mongodb": "^6.18.0"
   },
   "devDependencies": {
     "@types/axios": "^0.14.4",

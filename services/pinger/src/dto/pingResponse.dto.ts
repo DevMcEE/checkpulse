@@ -14,6 +14,8 @@ interface PingResponseArgs {
 export class PingResponse {
   meta: IMetaData;
   data: IData;
+  pingedAt = new Date();
+
   constructor({
     meta,
     metaId,
