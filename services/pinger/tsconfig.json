@@ -9,8 +9,12 @@
     "declaration": true,
     "sourceMap": true,
     "composite": true,
-    "tsBuildInfoFile": "./dist/.tsbuildinfo"
+    "tsBuildInfoFile": "./dist/.tsbuildinfo",
+    "paths": {
+      "@checkpulse/logger": ["../../packages/logger/src"],
+      "@checkpulse/*": ["../../packages/*/src"]
+    }
   },
   "include": ["src/**/*", "../../packages/**/*"],
-  "exclude": ["**/dist", "**/node_modules", "**/*.test.ts", "**/*.spec.ts"]
+  "exclude": ["**/dist", "**/node_modules"]
 }

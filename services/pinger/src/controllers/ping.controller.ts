@@ -2,6 +2,8 @@ import axios, { type AxiosError } from 'axios';
 import type { NextFunction, Request, Response } from 'express';
 import { DEFAULT_TIMEOUT, MAX_TIMEOUT } from '../config';
 import { PingResponse } from '../dto/pingResponse.dto';
+import makeConnection, { COLLECTION } from '../db/conn';
+import { logger } from '@checkpulse/logger';
 
 const httpPrefix = 'https://';
 
@@ -15,6 +17,9 @@ export const pingController = async (
       ? parseInt(req.query.timeout)
       : DEFAULT_TIMEOUT;
 
+  const db = await makeConnection();
+
+  const pingLogCollection = db?.collection(COLLECTION.logs);
   const timeoutMs = Math.min(timeout || DEFAULT_TIMEOUT, MAX_TIMEOUT);
   const address = decodeURIComponent(req.params.address);
   const start = Date.now();
@@ -24,14 +29,17 @@ export const pingController = async (
       timeout: timeoutMs,
     });
 
-    return res.status(200).json(
-      new PingResponse({
-        dataCode: resourceResponse.status,
-        dataTime: Date.now() - start,
-        dataType: resourceResponse.headers['content-type'],
-        dataMessage: resourceResponse.statusText,
-      }),
-    );
+    const response = new PingResponse({
+      dataCode: resourceResponse.status,
+      dataTime: Date.now() - start,
+      dataType: resourceResponse.headers['content-type'],
+      dataMessage: resourceResponse.statusText,
+    });
+
+    const pingResult = await pingLogCollection?.insertOne(response);
+    logger.info(pingResult, 'Response is logged');
+
+    return res.status(200).json(response);
   } catch (err: unknown) {
     const responseTime = Date.now() - start;
 
