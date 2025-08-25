@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { pingController } from '../controllers/ping.controller';
-import { pingMiddleware } from '../middlewares/ping.middleware';
+import { pingController } from '../controllers/ping/ping.controller';
+import { pingMiddleware } from '../middlewares/ping/ping.middleware';
 import { ipv4Props } from '../schemes/ip.scheme';
 import { urlProps } from '../schemes/url.scheme';
 

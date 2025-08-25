@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from 'express';
-import type { ISchemeProps } from '../types/api.interfaces';
+import type { ISchemeProps } from '../../types/api.types';
 
 export const pingMiddleware = (props: ISchemeProps) => {
   return (req: Request, res: Response, next: NextFunction) => {
