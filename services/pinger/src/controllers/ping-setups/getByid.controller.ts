@@ -4,7 +4,6 @@ import { ObjectId } from "mongodb";
 
 export const getByIdPingSetupController = async (req: Request, res: Response, next: NextFunction) => {
     try{
-        console.log("GET BY IDD LOOOL")
         const db = await makeConnection();
         const pingSetupsCollection = db?.collection(COLLECTION.pingSetups)
         const id = req.params["id"];
