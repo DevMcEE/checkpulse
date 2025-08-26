@@ -2,8 +2,8 @@ import { Request, Response, NextFunction } from "express"
 import { BadRequestError } from "../../errors/BadRequest.error"
 import { pingSetupBodyScheme } from "../../schemes/pingSetup/pingSetup.scheme";
 
-export const createPingSetupMiddlware = (req: Request, _res: Response, next: NextFunction) => {
-    if(!req.body || typeof req.body !== "object"){
+export const dataValidationMiddleware = (req: Request, _res: Response, next: NextFunction) => {
+    if(req.body){
         try{
             pingSetupBodyScheme.parse(req.body);
             return next()

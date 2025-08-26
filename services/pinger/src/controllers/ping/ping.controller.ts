@@ -1,8 +1,8 @@
 import axios, { type AxiosError } from 'axios';
 import type { NextFunction, Request, Response } from 'express';
-import { DEFAULT_TIMEOUT, MAX_TIMEOUT } from '../config';
-import { PingResponse } from '../dto/pingResponse.dto';
-import makeConnection, { COLLECTION } from '../db/conn';
+import { DEFAULT_TIMEOUT, MAX_TIMEOUT } from '../../config';
+import { PingResponse } from '../../dto/PingResponse.dto';
+import makeConnection, { COLLECTION } from '../../db/conn';
 import { logger } from '@checkpulse/logger';
 
 const httpPrefix = 'https://';

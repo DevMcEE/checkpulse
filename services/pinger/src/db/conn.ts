@@ -6,6 +6,7 @@ const connectionString = process.env.DB_URL || '';
 export const COLLECTION = {
   logs: 'pingLog',
   ping: 'ping',
+  pingSetups: "pingSetups"
 };
 
 const client = new MongoClient(connectionString, {

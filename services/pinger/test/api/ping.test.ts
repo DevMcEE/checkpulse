@@ -4,7 +4,7 @@ import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { startServer } from '../../src/app';
 import { PORT } from '../../src/config';
 import { logger } from '@checkpulse/logger';
-import db, { COLLECTION } from '../../src/db/conn';
+import makeConnection, { COLLECTION } from '../../src/db/conn';
 
 let server: Server;
 const BASE_URL = `http://localhost:${PORT}`;
@@ -12,7 +12,8 @@ const pingedResource = 'example.com';
 
 beforeAll(async () => {
   server = startServer(PORT);
-  const pingLogCollection = db?.collection(COLLECTION.logs);
+  const db = await makeConnection()
+  const pingLogCollection = await db?.collection(COLLECTION.logs);
   await pingLogCollection.drop();
 });
 
