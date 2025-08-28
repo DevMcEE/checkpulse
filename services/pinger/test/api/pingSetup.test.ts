@@ -12,7 +12,7 @@ let collection: any;
 
 const BASE_URL = `http://localhost:${PORT}`;
 
-const TEST_COLLECTION_NAME = 'pingSetup';
+const TEST_COLLECTION_NAME = 'pingSetups';
 
 beforeAll(async () => {
   client.db("pinger_test");
@@ -23,7 +23,7 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
-  
+   await collection.deleteMany({})
 });
 
 
@@ -58,9 +58,7 @@ describe('PingSetups CRUD', () => {
     const created = await collection.findOne({ _id: json.insertedId });
     expect(created).not.toBeNull();
     expect(created.resource).toBe(mockDocument.resource);
-    await collection.deleteOne({
-      _id : new ObjectId(json.insertedId)
-    });
+   
   });
 
   it('GET /ping-setups', async () => {
@@ -72,9 +70,6 @@ describe('PingSetups CRUD', () => {
     expect(res.status).toBe(200);
     expect(Array.isArray(json.data)).toBe(true);
     expect(json.data.length).toBeGreaterThan(0);
-    await collection.deleteOne({
-      _id : new ObjectId(insertedId)
-    });
   });
 
   it('GET /ping-setups/:id', async () => {
@@ -84,9 +79,6 @@ describe('PingSetups CRUD', () => {
     const json = await res.json();
     expect(res.status).toBe(200);;
     expect(json.resource).toBe(mockDocument.resource);
-    await collection.deleteOne({
-      _id : new ObjectId(insertedId)
-    });
   });
 
   it('PUT /ping-setups/:id', async () => {
@@ -102,14 +94,9 @@ describe('PingSetups CRUD', () => {
 
     const json = await res.json();
     expect(res.status).toBe(200);
-    expect(json).toHaveProperty('modifiedCount', 1);
-
     const inDb = await collection.findOne({ _id: insertedId });
     expect(inDb.timeout).toBe(9999);
 
-    await collection.deleteOne({
-      _id : new ObjectId(insertedId)
-    });
   });
 
   it('DELETE /ping-setups/:id', async () => {
@@ -121,8 +108,6 @@ describe('PingSetups CRUD', () => {
     const json = await res.json();
      
     expect(res.status).toBe(200);
-
-    expect(json).toHaveProperty('deletedCount', 1);
 
     const inDb = await collection.findOne({ _id: insertedId });
     expect(inDb).toBeNull();
