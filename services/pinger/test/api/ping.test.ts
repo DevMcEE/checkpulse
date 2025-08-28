@@ -11,14 +11,14 @@ const BASE_URL = `http://localhost:${PORT}`;
 const pingedResource = 'example.com';
 
 beforeAll(async () => {
-  server = startServer(PORT);
+  server = await startServer(PORT);
   const db = await makeConnection()
   const pingLogCollection = await db?.collection(COLLECTION.logs);
   await pingLogCollection.drop();
 });
 
 afterAll(() => {
-  server.close(() => logger.info('Server closed'));
+   server.close(() => logger.info('Server closed'));
 });
 
 describe('Ping Service', () => {

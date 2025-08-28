@@ -1,7 +1,8 @@
 import { MongoClient, ServerApiVersion } from 'mongodb';
 import { logger } from '@checkpulse/logger';
+import { DB_URL } from '../config';
 
-const connectionString = process.env.DB_URL || '';
+const connectionString = DB_URL || '';
 
 export const COLLECTION = {
   logs: 'pingLog',
@@ -9,13 +10,15 @@ export const COLLECTION = {
   pingSetups: "pingSetups"
 };
 
-const client = new MongoClient(connectionString, {
+export const client = new MongoClient(connectionString, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
   },
 });
+
+
 
 const makeConnection = async () => {
   let conn;

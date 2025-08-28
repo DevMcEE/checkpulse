@@ -22,13 +22,13 @@ export const startServer = (port: number = 3000) => {
   });
 
   // gracefull shutdown
-  process.on('SIGTERM', () => {
-    logger.warn('SIGTERM signal received: closing HTTP server!');
-    server.close(() => {
-      console.log(`HTTP server closed`)
-      logger.info('HTTP server closed');
-    });
-  });
+  // process.on('SIGTERM', () => {
+  //   logger.warn('SIGTERM signal received: closing HTTP server!');
+  //   server.close(() => {
+  //     console.log(`HTTP server closed`)
+  //     logger.info('HTTP server closed');
+  //   });
+  // });
 
   return server;
 };

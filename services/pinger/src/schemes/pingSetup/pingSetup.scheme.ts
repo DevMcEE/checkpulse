@@ -8,7 +8,7 @@ export const pingSetupBodyScheme = z.object({
     resource: z.union([ipv4Scheme, urlScheme]),
     timeout: z.number(),
     responseCode: responseCodeSchema,
-    contentType: z.string(),
+    contentType: z.string().nullable(),
     startTime: z.coerce.date(),
     period: z.number(),
     incedentThreshold: z.number(),

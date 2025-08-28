@@ -5,11 +5,18 @@ export const createPingSetupController = async (req: Request, res: Response, nex
     try{
         const db = await makeConnection();
         const pingSetupsCollection = db?.collection(COLLECTION.pingSetups)
-        await pingSetupsCollection?.insertOne(req.body)
-
-        return res.status(200).json({
-            success: true
+        const result = await pingSetupsCollection?.insertOne(req.body)
+        if(result?.insertedId){
+            return res.status(200).json({
+                success: true,
+                insertedId: result.insertedId
+            })
+        }
+        return res.status(500).json({
+            success:false
         })
+
+
     }
     catch(err:unknown){
         return next(err);
