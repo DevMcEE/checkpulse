@@ -13,7 +13,7 @@ export const updatePingSetupController = async (req: Request, res: Response, nex
         },{
             $set: req.body
         })
-        if(result?.upsertedCount == 0){
+        if(result?.modifiedCount == 0){
             throw new BadRequestError("Document not found");
         }
         return res.status(200).json({
