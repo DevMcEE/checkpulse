@@ -27,6 +27,9 @@
       "recommended": true,
       "correctness": {
         "useParseIntRadix": "off"
+      },
+      "suspicious": {
+        "noConsole": "error"
       }
     }
   },
@@ -34,7 +37,12 @@
     "enabled": true
   },
   "files": {
-    "includes": ["**", "!**/dist", "!**/*.generated.js", "!**/node_modules"]
+    "includes": [
+      "**",
+      "!**/dist",
+      "!**/*.generated.js",
+      "!**/node_modules"
+    ]
   },
   "vcs": {
     "enabled": true,

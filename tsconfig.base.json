@@ -12,7 +12,7 @@
       "@checkpulse/*": ["services/*/src", "packages/*/src"]
     }
   },
-  "include": ["services/**/*", "packages/**/*"],
+  "include": ["services/**/*.ts", "packages/**/*.ts"],
   "exclude": ["**/dist", "**/node_modules"],
   "references": [
     {

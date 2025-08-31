@@ -5,21 +5,15 @@
   "type": "module",
   "private": true,
   "main": "dist/server.cjs",
-  "tsup": {
-    "entry": [
-      "src/server.ts"
-    ],
-    "splitting": false,
-    "sourcemap": true,
-    "clean": true
-  },
   "scripts": {
     "dev": "NODE_ENV=dev tsx watch src/server.ts",
     "build": "tsup",
+    "check-types": "tsc --noEmit",
     "start": "node dist/server.cjs",
     "lint": "biome check",
     "format": "biome format --write",
-    "test": "NODE_ENV=test vitest",
+    "test": "NODE_ENV=test vitest --run",
+    "test:watch": "NODE_ENV=test vitest",
     "clean:build": "rm -rf ./dist"
   },
   "keywords": [],

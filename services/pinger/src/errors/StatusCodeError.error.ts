@@ -1,9 +1,9 @@
 export class StatusCodeError extends Error {
-    public statusCode: number;
+  public statusCode: number;
 
-    constructor(message: string, statusCode = 500){
-        super(message);
-        this.statusCode = statusCode;
-        Object.setPrototypeOf(this, StatusCodeError.prototype)
-    }
+  constructor(message: string, statusCode = 500) {
+    super(message);
+    this.statusCode = statusCode;
+    Object.setPrototypeOf(this, StatusCodeError.prototype);
+  }
 }

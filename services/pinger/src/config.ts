@@ -15,4 +15,4 @@ export const MAX_TIMEOUT = Number(process.env.MAX_TIMEOUT) || 60000;
 export const DEFAULT_TIMEOUT: number =
   Number(process.env.DEFAULT_TIMEOUT) || 30000;
 
-export const DB_URL = process.env.DB_URL || ""
+export const DB_URL = process.env.DB_URL || '';

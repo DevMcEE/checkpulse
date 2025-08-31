@@ -7,27 +7,14 @@
   "main": "dist/index.cjs",
   "exports": {
     ".": {
-      "types": "./src/index.ts",
-      "default": "./dist/index.cjs"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     }
-  },
-  "tsup": {
-    "entry": [
-      "src/index.ts"
-    ],
-    "format": [
-      "esm",
-      "cjs"
-    ],
-    "splitting": false,
-    "sourcemap": true,
-    "clean": true,
-    "skipNodeModulesBundle": true,
-    "target": "node20"
   },
   "scripts": {
     "build": "tsup",
-    "build:types": " tsc --emitDeclarationOnly --outDir dist",
+    "check-types": "tsc --noEmit",
     "lint": "biome check",
     "format": "biome format --write",
     "clean:build": "rm -rf ./dist"
