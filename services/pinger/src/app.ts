@@ -19,10 +19,10 @@ app.use(errorHandlerMiddleware);
 
 export const startServer = () => {
   const server = app.listen(0, () => {
-    logger.info(`Pinger server running`);
+    logger.info(`Pinger API running`);
   });
   server.addListener('error', (err) => {
-    logger.error(err, 'FUCKUP');
+    logger.error(err, 'Server error');
   });
 
   // gracefull shutdown
