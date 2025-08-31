@@ -13,8 +13,8 @@ app.use(json());
 app.use(httpLogger);
 
 app.use('/ping', pingRouter);
-
 app.use('/ping-setups', pingSetupsRouter);
+
 app.use(errorHandlerMiddleware);
 
 export const startServer = () => {
