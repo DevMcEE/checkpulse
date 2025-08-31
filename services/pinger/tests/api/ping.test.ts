@@ -1,26 +1,21 @@
-import type { Server } from 'node:http';
 import nock from 'nock';
-import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
-import { startServer } from '../../src/app';
-import { PORT } from '../../src/config';
-import { logger } from '@checkpulse/logger';
-import db, { COLLECTION } from '../../src/db/conn';
+import { afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import makeConnection, { COLLECTION } from '../../src/db/conn';
+import { getBaseUrl } from '../../src/utils/base-url-helpers';
 
-let server: Server;
-const BASE_URL = `http://localhost:${PORT}`;
 const pingedResource = 'example.com';
 
-beforeAll(async () => {
-  server = startServer(PORT);
-  const pingLogCollection = db?.collection(COLLECTION.logs);
-  await pingLogCollection.drop();
-});
-
-afterAll(() => {
-  server.close(() => logger.info('Server closed'));
-});
-
 describe('Ping Service', () => {
+  let BASE_URL = '';
+  beforeAll(() => {
+    BASE_URL = getBaseUrl();
+  });
+  beforeEach(async () => {
+    const db = await makeConnection();
+    const pingLogCollection = db?.collection(COLLECTION.logs);
+    await pingLogCollection.drop();
+  });
+
   afterEach(() => {
     nock.cleanAll();
   });

@@ -5,21 +5,15 @@
   "type": "module",
   "private": true,
   "main": "dist/server.cjs",
-  "tsup": {
-    "entry": [
-      "src/server.ts"
-    ],
-    "splitting": false,
-    "sourcemap": true,
-    "clean": true
-  },
   "scripts": {
     "dev": "NODE_ENV=dev tsx watch src/server.ts",
     "build": "tsup",
+    "check-types": "tsc --noEmit",
     "start": "node dist/server.cjs",
     "lint": "biome check",
     "format": "biome format --write",
-    "test": "NODE_ENV=test vitest",
+    "test": "NODE_ENV=test vitest --run",
+    "test:watch": "NODE_ENV=test vitest",
     "clean:build": "rm -rf ./dist"
   },
   "keywords": [],
@@ -36,7 +30,8 @@
   "devDependencies": {
     "@types/axios": "^0.14.4",
     "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.3"
+    "@types/express": "^5.0.3",
+    "@types/mongodb": "^4.0.7"
   },
   "engines": {
     "node": "^20.19.0",

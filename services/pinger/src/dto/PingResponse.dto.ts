@@ -1,4 +1,4 @@
-import type { IData, IMetaData } from '../types/api.interfaces';
+import type { IData, IMetaData } from '../types/api.types';
 
 interface PingResponseArgs {
   meta?: IMetaData;

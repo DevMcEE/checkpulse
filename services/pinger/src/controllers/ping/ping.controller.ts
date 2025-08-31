@@ -1,9 +1,9 @@
+import { logger } from '@checkpulse/logger';
 import axios, { type AxiosError } from 'axios';
 import type { NextFunction, Request, Response } from 'express';
-import { DEFAULT_TIMEOUT, MAX_TIMEOUT } from '../config';
-import { PingResponse } from '../dto/pingResponse.dto';
-import makeConnection, { COLLECTION } from '../db/conn';
-import { logger } from '@checkpulse/logger';
+import { DEFAULT_TIMEOUT, MAX_TIMEOUT } from '../../config';
+import makeConnection, { COLLECTION } from '../../db/conn';
+import { PingResponse } from '../../dto/PingResponse.dto';
 
 const httpPrefix = 'https://';
 
@@ -41,6 +41,8 @@ export const pingController = async (
 
     return res.status(200).json(response);
   } catch (err: unknown) {
+    logger.error(err, 'Ping Controller');
+
     const responseTime = Date.now() - start;
 
     if ((err as AxiosError).code === 'ECONNABORTED') {

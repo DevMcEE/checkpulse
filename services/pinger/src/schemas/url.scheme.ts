@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { ISchemeProps } from '../types/api.interfaces';
+import type { ISchemeProps } from '../types/api.types';
 
 export const urlScheme: z.ZodString = z
   .string()

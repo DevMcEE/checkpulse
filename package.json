@@ -6,12 +6,14 @@
   "private": true,
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "dev": "turbo run dev",
-    "build": "turbo run build",
-    "start": "turbo run start",
-    "test": "turbo run test",
-    "lint": "turbo run lint",
-    "format": "biome format --write"
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "check-types": "turbo check-types",
+    "start": "turbo start",
+    "test": "turbo test",
+    "lint": "turbo lint",
+    "format": "biome format --write",
+    "clean:all": "rm -rf node_modules ./**/node_modules ./**/.dist"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +22,7 @@
   "devDependencies": {
     "@biomejs/biome": "^2.2.0",
     "@types/node": "^24.3.0",
+    "lefthook": "^1.12.3",
     "nock": "^14.0.10",
     "ts-node": "^10.9.2",
     "tsup": "^8.5.0",
