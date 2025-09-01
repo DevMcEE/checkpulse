@@ -25,15 +25,15 @@ export const pingController = async (
   const start = Date.now();
 
   try {
-    const resourceResponse = await axios.get(httpPrefix + address, {
+    const targetResponse = await axios.get(httpPrefix + address, {
       timeout: timeoutMs,
     });
 
     const response = new PingResponse({
-      dataCode: resourceResponse.status,
+      dataCode: targetResponse.status,
       dataTime: Date.now() - start,
-      dataType: resourceResponse.headers['content-type'],
-      dataMessage: resourceResponse.statusText,
+      dataType: targetResponse.headers['content-type'],
+      dataMessage: targetResponse.statusText,
     });
 
     const pingResult = await pingLogCollection?.insertOne(response);

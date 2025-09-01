@@ -5,7 +5,7 @@ import { urlScheme } from '../url.scheme';
 import { notificationChannelsScheme } from './notificationsChannels.scheme';
 
 export const pingSetupBodyScheme = z.object({
-  resource: z.union([ipv4Scheme, urlScheme]),
+  target: z.union([ipv4Scheme, urlScheme]),
   timeout: z.number(),
   responseCode: responseCodeSchema,
   contentType: z.string().nullable(),

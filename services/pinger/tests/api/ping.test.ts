@@ -3,7 +3,7 @@ import { afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import makeConnection, { COLLECTION } from '../../src/db/conn';
 import { getBaseUrl } from '../../src/utils/base-url-helpers';
 
-const pingedResource = 'example.com';
+const pingedtarget = 'example.com';
 
 describe('Ping Service', () => {
   let BASE_URL = '';
@@ -22,7 +22,7 @@ describe('Ping Service', () => {
 
   it("Should return code 200 and type 'text/plain'", async () => {
     const url = `${BASE_URL}/ping/url/example.com?timeout=4000`;
-    nock(`https://${pingedResource}`).get('/').reply(200, 'uhm, okay', {
+    nock(`https://${pingedtarget}`).get('/').reply(200, 'uhm, okay', {
       'Content-Type': 'text/plain',
     });
 
@@ -54,11 +54,9 @@ describe('Ping Service', () => {
   });
 
   it('Should return timeouted = true', async () => {
-    nock(`https://${pingedResource}`).get('/').delay(50).reply(200, 'OK');
+    nock(`https://${pingedtarget}`).get('/').delay(50).reply(200, 'OK');
 
-    const res = await fetch(
-      `${BASE_URL}/ping/url/${pingedResource}?timeout=10`,
-    );
+    const res = await fetch(`${BASE_URL}/ping/url/${pingedtarget}?timeout=10`);
     const json = await res.json();
 
     expect(json.data).toHaveProperty('timeouted', true);

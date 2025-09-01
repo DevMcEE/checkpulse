@@ -2,7 +2,7 @@ import type { HostType } from '../types/host.types';
 import type { Notification } from '../types/ping-setup.types';
 
 export class PingSetup {
-  resource: HostType | null;
+  target: HostType | null;
   timeout: number | null;
   responseCode: number | null;
   contentType: string | null;
@@ -13,7 +13,7 @@ export class PingSetup {
   notificationChannels: Notification[] | null;
 
   constructor({
-    resource,
+    target,
     timeout,
     responseCode,
     contentType,
@@ -23,7 +23,7 @@ export class PingSetup {
     recoveryThreshold,
     notificationChannels,
   }: PingSetup) {
-    this.resource = resource || null;
+    this.target = target || null;
     this.timeout = timeout || null;
     this.responseCode = responseCode || null;
     this.contentType = contentType || null;
