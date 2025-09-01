@@ -14,7 +14,7 @@ export interface SlackNotification {
 export type Notification = EmailNotification | SlackNotification;
 
 export interface PingSetup {
-  resource: string | null;
+  target: string | null;
   timeout: number | null;
   responseCode: number | null;
   contentType: string | null;

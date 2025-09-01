@@ -8,7 +8,7 @@ let db: Db;
 let collection: Collection<PingSetup>;
 
 const mockDocument: PingSetup = {
-  resource: 'example.com',
+  target: 'example.com',
   timeout: 5000,
   responseCode: 200,
   contentType: 'text/plain',
@@ -47,7 +47,7 @@ describe('PingSetups CRUD', () => {
     });
 
     expect(created).not.toBeNull();
-    expect(created?.resource).toBe(mockDocument.resource);
+    expect(created?.target).toBe(mockDocument.target);
   });
 
   it('GET /ping-setups', async () => {
@@ -68,7 +68,7 @@ describe('PingSetups CRUD', () => {
     const json = await res.json();
 
     expect(res.status).toBe(200);
-    expect(json.data.resource).toBe(mockDocument.resource);
+    expect(json.data.target).toBe(mockDocument.target);
   });
 
   it('PUT /ping-setups/:id', async () => {
@@ -78,7 +78,7 @@ describe('PingSetups CRUD', () => {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        resource: 'example.com',
+        target: 'example.com',
         timeout: 9999,
         responseCode: 200,
         contentType: 'text/plain',
