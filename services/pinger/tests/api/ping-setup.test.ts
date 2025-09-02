@@ -1,4 +1,5 @@
 import { type Collection, type Db, ObjectId } from 'mongodb';
+import { v4 as uuidv4 } from 'uuid';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import makeConnection, { COLLECTION } from '../../src/db/conn';
 import type { PingSetup } from '../../src/types/ping-setup.types';
@@ -32,9 +33,10 @@ describe('PingSetups CRUD', () => {
   });
 
   it('POST /ping-setups', async () => {
+    const userUuid = uuidv4();
     const res = await fetch(`${BASE_URL}/ping-setups`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'user-uuid': userUuid },
       body: JSON.stringify(mockDocument),
     });
 
@@ -51,9 +53,13 @@ describe('PingSetups CRUD', () => {
   });
 
   it('GET /ping-setups', async () => {
-    await collection.insertOne(mockDocument);
+    const userUuid = uuidv4();
+    await collection.insertOne({ ...mockDocument, userUuid });
 
-    const res = await fetch(`${BASE_URL}/ping-setups`);
+    const res = await fetch(`${BASE_URL}/ping-setups`, {
+      method: 'GET',
+      headers: { 'user-uuid': userUuid },
+    });
     const json = await res.json();
 
     expect(res.status).toBe(200);
@@ -62,9 +68,16 @@ describe('PingSetups CRUD', () => {
   });
 
   it('GET /ping-setups/:id', async () => {
-    const { insertedId } = await collection.insertOne(mockDocument);
+    const userUuid = uuidv4();
+    const { insertedId } = await collection.insertOne({
+      ...mockDocument,
+      userUuid,
+    });
 
-    const res = await fetch(`${BASE_URL}/ping-setups/${insertedId}`);
+    const res = await fetch(`${BASE_URL}/ping-setups/${insertedId}`, {
+      method: 'GET',
+      headers: { 'user-uuid': userUuid },
+    });
     const json = await res.json();
 
     expect(res.status).toBe(200);
@@ -72,11 +85,15 @@ describe('PingSetups CRUD', () => {
   });
 
   it('PUT /ping-setups/:id', async () => {
-    const { insertedId } = await collection.insertOne(mockDocument);
+    const userUuid = uuidv4();
+    const { insertedId } = await collection.insertOne({
+      ...mockDocument,
+      userUuid,
+    });
 
     const res = await fetch(`${BASE_URL}/ping-setups/${insertedId}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'user-uuid': userUuid },
       body: JSON.stringify({
         target: 'example.com',
         timeout: 9999,
@@ -96,14 +113,19 @@ describe('PingSetups CRUD', () => {
   });
 
   it('DELETE /ping-setups/:id', async () => {
-    const { insertedId } = await collection.insertOne(mockDocument);
+    const userUuid = uuidv4();
+
+    const { insertedId } = await collection.insertOne({
+      ...mockDocument,
+      userUuid,
+    });
     const res = await fetch(
       `${BASE_URL}/ping-setups/${(insertedId as ObjectId).toString()}`,
       {
         method: 'DELETE',
+        headers: { 'user-uuid': userUuid },
       },
     );
-
     expect(res.status).toBe(200);
 
     const inDb = await collection.findOne({ _id: insertedId });
