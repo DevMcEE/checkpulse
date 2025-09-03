@@ -10,13 +10,16 @@ export const deletePingSetupController = async (
 ) => {
   try {
     const db = await makeConnection();
+    const userUuid = req.header('user-uuid');
     const pingSetupsCollection = db?.collection(COLLECTION.pingSetups);
     const { id } = req.params;
-    const result = await pingSetupsCollection?.deleteOne({
+
+    const result = await pingSetupsCollection?.findOneAndDelete({
       _id: ObjectId.createFromHexString(id),
+      userUuid,
     });
 
-    if (!result?.deletedCount) {
+    if (!result) {
       throw new BadRequestError('Document not found');
     }
 

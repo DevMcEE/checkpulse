@@ -23,4 +23,5 @@ export interface PingSetup {
   incedentThreshold: number | null;
   recoveryThreshold: number | null;
   notificationChannels: Notification[] | null;
+  userUuid?: string;
 }
