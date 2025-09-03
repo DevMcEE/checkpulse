@@ -7,12 +7,6 @@ export function requireUserUuid(
   next: NextFunction,
 ) {
   const userUuid = req.header('user-uuid');
-  try {
-    if (!userUuid) {
-      throw new StatusCodeError('User uuid is missing', 401);
-    }
-  } catch (err: unknown) {
-    next(err);
-  }
+  if (!userUuid) next(new StatusCodeError('User uuid is missing', 401));
   next();
 }
