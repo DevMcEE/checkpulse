@@ -1,18 +1,16 @@
 import { NextFunction, Request, Response } from 'express';
-import { BadRequestError } from '../errors/BadRequest.error';
-import { uuidSchema } from '../schemas/pingSetup/uuid.scheme';
+import { StatusCodeError } from '../errors/StatusCodeError.error';
 
 export function requireUserUuid(
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction,
 ) {
   const userUuid = req.header('user-uuid');
   try {
     if (!userUuid) {
-      throw new BadRequestError('User uuid is missing');
+      throw new StatusCodeError('User uuid is missing', 401);
     }
-    uuidSchema.parse(userUuid);
   } catch (err: unknown) {
     next(err);
   }
