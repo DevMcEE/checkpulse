@@ -181,4 +181,17 @@ describe('PingSetups CRUD', () => {
     const inDb = await collection.findOne({ _id: insertedId });
     expect(inDb).not.toBeNull();
   });
+
+  it('should return 401 if user uuid header is missing when creating a ping setup', async () => {
+    const res = await fetch(`${BASE_URL}/ping-setups`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(mockDocument),
+    });
+
+    expect(res.status).toBe(401);
+    const body = await res.json();
+    expect(body).toHaveProperty('error');
+    expect(body.error).toBe('Unauthorized access');
+  });
 });

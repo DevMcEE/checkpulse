@@ -7,6 +7,6 @@ export function requireUserUuid(
   next: NextFunction,
 ) {
   const userUuid = req.header('user-uuid');
-  if (!userUuid) next(new StatusCodeError('User uuid is missing', 401));
+  if (!userUuid) return next(new StatusCodeError('Unauthorized access', 401));
   next();
 }
