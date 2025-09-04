@@ -1,4 +1,4 @@
-import makeConnection, { COLLECTION } from '../conn';
+import makeConnection, { COLLECTION, closeDbConnection } from '../conn';
 
 export async function CreatePingSetupsIndex() {
   const db = await makeConnection();
@@ -8,5 +8,6 @@ export async function CreatePingSetupsIndex() {
     { userUuid: 1, target: 1 },
     { unique: true, name: 'userUuid_target_unique' },
   );
-  process.exit(0);
+
+  closeDbConnection();
 }
