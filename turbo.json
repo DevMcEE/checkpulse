@@ -21,6 +21,9 @@
     },
     "format": {
       "dependsOn": ["^format"]
+    },
+    "migrate": {
+      "cache": false
     }
   }
 }

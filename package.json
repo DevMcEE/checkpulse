@@ -11,6 +11,7 @@
     "check-types": "turbo check-types",
     "start": "turbo start",
     "test": "turbo test",
+    "migrate": "turbo migrate",
     "lint": "turbo lint",
     "format": "biome format --write",
     "clean:all": "rm -rf node_modules ./**/node_modules ./**/.dist"

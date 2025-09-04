@@ -194,4 +194,22 @@ describe('PingSetups CRUD', () => {
     expect(body).toHaveProperty('error');
     expect(body.error).toBe('Unauthorized access');
   });
+
+  it('should not allow creating duplicate targets for the same user', async () => {
+    const userUuid = randomUUID();
+    const res1 = await fetch(`${BASE_URL}/ping-setups`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'user-uuid': userUuid },
+      body: JSON.stringify(mockDocument),
+    });
+
+    expect(res1.status).toBe(200);
+
+    const res2 = await fetch(`${BASE_URL}/ping-setups`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'user-uuid': userUuid },
+      body: JSON.stringify(mockDocument),
+    });
+    expect(res2.status).toBe(409);
+  });
 });
