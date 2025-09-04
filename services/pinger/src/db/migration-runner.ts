@@ -1,3 +1,4 @@
+import { closeDbConnection } from './conn';
 import { CreatePingSetupsIndex } from './migrations/001-create-pingSetup-index';
 
 const migrationFuncs = [CreatePingSetupsIndex];
@@ -8,6 +9,6 @@ async function run() {
   });
 }
 
-run().catch((err) => {
-  process.exit(1);
+run().catch((_) => {
+  closeDbConnection();
 });
