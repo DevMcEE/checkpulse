@@ -13,6 +13,7 @@
     "lint": "biome check",
     "format": "biome format --write",
     "test": "NODE_ENV=test vitest --run",
+    "migrate": "NODE_ENV=dev tsx src/db/migration-runner.ts",
     "test:watch": "NODE_ENV=test vitest",
     "clean:build": "rm -rf ./dist"
   },

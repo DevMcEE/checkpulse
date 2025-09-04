@@ -21,6 +21,10 @@
     },
     "format": {
       "dependsOn": ["^format"]
+    },
+    "migrate": {
+      "persistent": true,
+      "cache": false
     }
   }
 }
