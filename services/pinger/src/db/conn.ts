@@ -35,3 +35,10 @@ export default makeConnection;
 export const closeDbConnection = async () => {
   conn.close();
 };
+
+const db = await makeConnection();
+const pingSetupsCollection = db?.collection(COLLECTION.pingSetups);
+await pingSetupsCollection.createIndex(
+  { userUuid: 1, target: 1 },
+  { unique: true },
+);

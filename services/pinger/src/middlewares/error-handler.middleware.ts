@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from 'express';
+import { MongoServerError } from 'mongodb';
 import { ZodError } from 'zod';
 import { BadRequestError } from '../errors/BadRequest.error';
 import { StatusCodeError } from '../errors/StatusCodeError.error';
@@ -21,6 +22,13 @@ export const errorHandlerMiddleware = (
     return res.status(err.statusCode).json({
       error: err.message,
     });
+  }
+  if (err instanceof MongoServerError) {
+    if (typeof err.code === 'number' && err.code === 11000) {
+      res.status(409).json({
+        error: 'Duplicate setup: this target already exists for this user',
+      });
+    }
   }
 
   return res.status(500).json({
