@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import { StatusCodeError } from '../errors/StatusCodeError.error';
 
 export function requireUserUuid(

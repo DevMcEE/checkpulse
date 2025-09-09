@@ -1,4 +1,4 @@
-import { Db } from 'mongodb';
+import type { Db } from 'mongodb';
 import { COLLECTION } from '../conn';
 
 export async function CreatePingSetupsIndex(db: Db) {
