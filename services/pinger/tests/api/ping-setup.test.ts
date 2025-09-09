@@ -66,7 +66,7 @@ describe('PingSetups CRUD', () => {
 
     expect(res.status).toBe(200);
     expect(Array.isArray(json.data)).toBe(true);
-    expect(json.data.every((d: any) => d.userUuid === userUuid)).toBe(true);
+    expect(json.data.every((d) => d.userUuid === userUuid)).toBe(true);
   });
 
   it('should return a single ping setup by id for the correct user', async () => {

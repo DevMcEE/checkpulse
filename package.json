@@ -23,6 +23,7 @@
   "devDependencies": {
     "@biomejs/biome": "^2.2.0",
     "@types/node": "^24.3.0",
+    "cross-env": "^10.0.0",
     "lefthook": "^1.12.3",
     "nock": "^14.0.10",
     "ts-node": "^10.9.2",
