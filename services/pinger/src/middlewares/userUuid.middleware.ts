@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from 'express';
-import { StatusCodeError } from '../errors/StatusCodeError.error';
+import { UnauthorizedError } from '../errors/Unauthorized.error';
 
 export function requireUserUuid(
   req: Request,
@@ -7,6 +7,6 @@ export function requireUserUuid(
   next: NextFunction,
 ) {
   const userUuid = req.header('user-uuid');
-  if (!userUuid) return next(new StatusCodeError('Unauthorized access', 401));
+  if (!userUuid) return next(new UnauthorizedError('Unauthorized access'));
   next();
 }
