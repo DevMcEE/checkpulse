@@ -1,8 +1,7 @@
-import { StatusCodeError } from './StatusCodeError.error';
-
-export class BadRequestError extends StatusCodeError {
+export class BadRequestError extends Error {
   constructor(message = 'Bad request') {
-    super(message, 400);
+    super(message);
     Object.setPrototypeOf(this, BadRequestError.prototype);
+    this.name = 'BadRequestError';
   }
 }
