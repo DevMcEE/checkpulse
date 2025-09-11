@@ -1,4 +1,4 @@
-import type { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { MongoServerError } from 'mongodb';
 import { ZodError } from 'zod';
 import { BadRequestError } from '../errors/BadRequest.error';
@@ -14,36 +14,37 @@ export const errorHandlerMiddleware = (
   res: Response,
   _next: NextFunction,
 ) => {
-  if (err instanceof ZodError) {
-    return res.status(400).json({
-      error: 'Validation error',
-    });
-  }
-  if (err instanceof BadRequestError) {
-    return res.status(400).json({
-      error: err.message,
-    });
-  }
-  if (err instanceof MongoServerError) {
-    if (typeof err.code === 'number' && err.code === 11000) {
-      res.status(409).json({
-        error: 'Duplicate setup: this target already exists for this user',
-      });
+  let message = err instanceof Error ? err.message : String(err);
+  let statusCode = 500;
+
+  switch (true) {
+    case err instanceof ZodError: {
+      message = 'Validation error';
+      statusCode = 400;
+      break;
+    }
+    case err instanceof BadRequestError: {
+      statusCode = 400;
+      break;
+    }
+    case err instanceof MongoServerError: {
+      if (typeof err.code === 'number' && err.code === 11000) {
+        message = 'Duplicate setup: this target already exists for this user';
+        statusCode = 409;
+      }
+      break;
+    }
+    case err instanceof UnauthorizedError: {
+      statusCode = 401;
+      break;
+    }
+    case err instanceof NotFoundError: {
+      statusCode = 404;
+      break;
     }
   }
-  if (err instanceof UnauthorizedError) {
-    return res.status(401).json({
-      error: err.message,
-    });
-  }
-  if (err instanceof NotFoundError) {
-    return res.status(404).json({
-      error: err.message,
-    });
-  }
 
-  return res.status(500).json({
-    success: false,
-    message: err instanceof Error ? err.message : String(err),
+  return res.status(statusCode).json({
+    error: message,
   });
 };
