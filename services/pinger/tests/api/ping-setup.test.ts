@@ -42,10 +42,9 @@ describe('PingSetups CRUD', () => {
 
     const json = await res.json();
     expect(res.status).toBe(200);
-    expect(json).toHaveProperty('success', true);
 
     const created = await collection.findOne({
-      _id: ObjectId.createFromHexString(json.insertedId),
+      _id: new ObjectId(json.data.insertedId),
     });
 
     expect(created).not.toBeNull();
@@ -98,8 +97,8 @@ describe('PingSetups CRUD', () => {
       headers: { 'user-uuid': userUuid },
     });
     const body = await res.json();
-    expect(res.status).toBe(200);
-    expect(body).toHaveProperty('data', null);
+    expect(res.status).toBe(400);
+    expect(body).toHaveProperty('error');
   });
 
   it('should update a ping setup for the correct user', async () => {

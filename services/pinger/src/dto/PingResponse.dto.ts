@@ -1,4 +1,5 @@
 import type { IData, IMetaData } from '../types/api.types';
+import { BaseResponseDto } from './BaseResponse.dto';
 
 interface PingResponseArgs {
   meta?: IMetaData;
@@ -11,10 +12,8 @@ interface PingResponseArgs {
   dataMessage?: string;
 }
 
-export class PingResponse {
-  meta: IMetaData;
-  data: IData;
-  pingedAt = new Date();
+export class PingResponseDto extends BaseResponseDto<IMetaData, IData> {
+  pingedAt: Date;
 
   constructor({
     meta,
@@ -26,19 +25,17 @@ export class PingResponse {
     dataTime,
     dataMessage,
   }: PingResponseArgs) {
-    if (meta) this.meta = meta;
-    else
-      this.meta = {
-        id: metaId || null,
-      };
-    if (data) this.data = data;
-    else
-      this.data = {
-        code: dataCode || null,
-        type: dataType || null,
-        timeouted: dataTimeouted || false,
-        time: dataTime || null,
-        message: dataMessage || null,
-      };
+    const finalMeta: IMetaData = meta ?? { id: metaId || null };
+
+    const finalData: IData = data ?? {
+      code: dataCode || null,
+      type: dataType || null,
+      timeouted: dataTimeouted || false,
+      time: dataTime || null,
+      message: dataMessage || null,
+    };
+
+    super(finalMeta, finalData);
+    this.pingedAt = new Date();
   }
 }

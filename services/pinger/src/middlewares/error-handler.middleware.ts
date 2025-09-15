@@ -4,14 +4,12 @@ import { ZodError } from 'zod';
 import { BadRequestError } from '../errors/BadRequest.error';
 import { NotFoundError } from '../errors/NotFound.error';
 import { UnauthorizedError } from '../errors/Unauthorized.error';
-
-// Unused arguments in "errorHandlerMiddleware" should be left in place,
-// because without them, express will not recognize this handler as an error handler.
+import type { ErrorResponse } from '../types/type.d';
 
 export const errorHandlerMiddleware = (
   err: unknown,
   _req: Request,
-  res: Response,
+  res: Response<ErrorResponse>,
   _next: NextFunction,
 ) => {
   let message = err instanceof Error ? err.message : String(err);
@@ -44,7 +42,5 @@ export const errorHandlerMiddleware = (
     }
   }
 
-  return res.status(statusCode).json({
-    error: message,
-  });
+  return res.status(statusCode).json({ error: message });
 };

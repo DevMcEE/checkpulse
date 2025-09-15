@@ -3,7 +3,8 @@ import axios, { type AxiosError } from 'axios';
 import type { NextFunction, Request, Response } from 'express';
 import { DEFAULT_TIMEOUT, MAX_TIMEOUT } from '../../config';
 import makeConnection, { COLLECTION } from '../../db/conn';
-import { PingResponse } from '../../dto/PingResponse.dto';
+import { GenericResponseDto } from '../../dto/GenericResponse.dto';
+import { PingResponseDto } from '../../dto/PingResponse.dto';
 
 const httpPrefix = 'https://';
 
@@ -18,8 +19,8 @@ export const pingController = async (
       : DEFAULT_TIMEOUT;
 
   const db = await makeConnection();
-
   const pingLogCollection = db?.collection(COLLECTION.logs);
+
   const timeoutMs = Math.min(timeout || DEFAULT_TIMEOUT, MAX_TIMEOUT);
   const address = decodeURIComponent(req.params.address);
   const start = Date.now();
@@ -29,43 +30,49 @@ export const pingController = async (
       timeout: timeoutMs,
     });
 
-    const response = new PingResponse({
+    const response = new PingResponseDto({
       dataCode: targetResponse.status,
       dataTime: Date.now() - start,
       dataType: targetResponse.headers['content-type'],
       dataMessage: targetResponse.statusText,
     });
 
-    const pingResult = await pingLogCollection?.insertOne(response);
-    logger.info(pingResult, 'Response is logged');
+    await pingLogCollection?.insertOne(response);
+    logger.info(
+      { address, status: targetResponse.status },
+      'Response is logged',
+    );
 
-    return res.status(200).json(response);
+    return res
+      .status(200)
+      .json(new GenericResponseDto(undefined, response.data));
   } catch (err: unknown) {
     logger.error(err, 'Ping Controller');
-
     const responseTime = Date.now() - start;
 
     if ((err as AxiosError).code === 'ECONNABORTED') {
-      return res.status(200).json(
-        new PingResponse({
-          dataTime: responseTime,
-          dataTimeouted: true,
-        }),
-      );
+      const response = new PingResponseDto({
+        dataTime: responseTime,
+        dataTimeouted: true,
+      });
+      return res
+        .status(200)
+        .json(new GenericResponseDto(undefined, response.data));
     }
 
     if ((err as AxiosError).response) {
       const errResponse = (err as AxiosError).response;
-
-      return res.status(200).json(
-        new PingResponse({
-          dataCode: errResponse?.status,
-          dataType: errResponse?.headers['content-type'],
-          dataTime: responseTime,
-          dataMessage: (err as AxiosError)?.message,
-        }),
-      );
+      const response = new PingResponseDto({
+        dataCode: errResponse?.status,
+        dataType: errResponse?.headers['content-type'],
+        dataTime: responseTime,
+        dataMessage: (err as AxiosError)?.message,
+      });
+      return res
+        .status(200)
+        .json(new GenericResponseDto(undefined, response.data));
     }
+
     return next(err);
   }
 };
